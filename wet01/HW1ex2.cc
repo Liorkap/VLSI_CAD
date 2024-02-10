@@ -15,12 +15,8 @@ int getPerviousPort(hcmNode *node );
 bool hasRank (hcmInstance *inst);
 void getFullName(hcmInstance *inst, string relName);
 bool isPrimitive (hcmInstance *inst);
-bool isRealPort (hcmPort *port);
 map <hcmInstance *, int> rankmap;
 map <hcmInstance *, string> namemap;
-vector <hcmPort *> designPorts;
-vector <string> designPortNames;
-map <string,hcmNode *> designNodes;
 int main(int argc, char **argv) {
   int argIdx = 1;
   int anyErr = 0;
@@ -80,6 +76,7 @@ int main(int argc, char **argv) {
   
   fv << "file name: " << fileName << endl;
   
+  hcmCell *flatCell = hcmFlatten(cellName + string("_flat"), topCell, globalNodes);
 
   /* assign your answer for HW1ex2 to maxRankVector 
    * maxRankVector is a vector of pairs of type <int, string>,
@@ -88,32 +85,22 @@ int main(int argc, char **argv) {
    * Note - maxRankVector should be sorted.
   */
   vector<pair<int, string>> maxRankVector;
-  hcmInstance *temp;
-  map <string,hcmInstance *> instmap = topCell->getInstances();
-  map <string,hcmInstance *> instmap2;
-   designPorts = topCell->getPorts();
-    designNodes = topCell->getNodes();
-  for(int i =0; i< designPorts.size(); i++){
-		// cout << designPorts[i]->getName() << " is a des port " << designPorts[i] << endl;
-    designPortNames.push_back(designPorts[i]->getName());
+  map <string,hcmInstance *> instmap = flatCell->getInstances();
+  for(auto itr = instmap.begin(); itr != instmap.end(); itr++){
+    getFullName(itr->second, ""); // for flat inst
 	}
   for(auto itr = instmap.begin(); itr != instmap.end(); itr++){
-    temp = topCell->getInst(itr->first);
-    getFullName(itr->second, itr->first + '/');
-    // instmap2 =(temp->masterCell()->getInstances()); // to run on m2
-	}
-  instmap2 = instmap.begin()->second->masterCell()->getInstances(); // to run on M1
-  for(auto itr = instmap2.begin(); itr != instmap2.end(); itr++){
-    rankmap[itr->second] = getInputPorts(itr->second);
-    // fv << "and it has " << getInputPorts(itr->second) << " input ports" << endl; 
+    getInputPorts(itr->second);
 	}
    pair<int,string> tempPair;
   for(auto itr = rankmap.begin(); itr != rankmap.end(); itr++){
-		// cout << "inst : " << namemap[itr->first] << " rank : " << itr->second << endl;
-    tempPair = make_pair(itr->second,namemap[itr->first]);
-    maxRankVector.push_back(tempPair);
-    // fv << "and it has " << getInputPorts(itr->second) << " input ports" << endl; 
+    if(itr->second != -1) // if has -1 rank it's connected to VDD/VSS
+    {
+      tempPair = make_pair(itr->second,namemap[itr->first]);
+      maxRankVector.push_back(tempPair);
+    }
 	}
+  // sorting the vector first by rank then by name
   sort(maxRankVector.begin(),maxRankVector.end(),[](const auto& a, const auto& b) {
         if (a.first != b.first) {
           return a.first < b.first;
@@ -130,21 +117,17 @@ int main(int argc, char **argv) {
 	
   return(0);
 }
-
+// goes over the input ports of inst and return the max rank
 int getInputPorts (hcmInstance *inst){
     map <string,hcmInstPort *> instports;
     instports = inst->getInstPorts();
-    // cout << "arrive here4" << endl;
     for(auto itr = instports.begin(); itr != instports.end();){
       if (itr->second->getPort()->getDirection() == 2){
         itr = instports.erase(itr);
       }
       else {
-        // cout << itr->second << "issue" << endl;
-        // cout << "inst conncted to inst : " << getPerviousPort(itr->second->getNode()) << endl;
         itr++;
       }
-    // cout << "arrive here" << endl;
 
 	}
     int maxrank =-1;
@@ -156,15 +139,13 @@ int getInputPorts (hcmInstance *inst){
       }
 
 	}
-  
+  rankmap[inst] = maxrank;
   return maxrank;
 }
-
+// returns the rank of the node's output port/instport
 int getPerviousPort(hcmNode *node ) {
 
-  // hcmNode *node = instport->getNode();
   map <string,hcmInstPort *> instports = node->getInstPorts();
-  // instports.erase(instport->getName());
       for(auto itr = instports.begin(); itr != instports.end();){
       if (itr->second->getPort()->getDirection() == 1){
         itr = instports.erase(itr);
@@ -175,6 +156,9 @@ int getPerviousPort(hcmNode *node ) {
       }
       if( instports.size() == 1){
         if (hasRank(instports.begin()->second->getInst())){
+          if (rankmap[instports.begin()->second->getInst()] == -1){
+            return -1;
+          }
           return 1 + rankmap[instports.begin()->second->getInst()];
         }
         else {
@@ -183,40 +167,28 @@ int getPerviousPort(hcmNode *node ) {
 
       }
       else {
-        // cout << " this rank is zero" << endl;
-        // auto it = find(designPorts.begin(), designPorts.end(), node->getPort());
-        // if (it != designPorts.end() ){
-
-        //   return instports.size();
-        // }
-        // else {
-        //   return 1 + getPerviousPort(node->getPort()->owner() );
-        // }
-        // cout << node->getPort()->owner()->getPort()->owner()->getPort()->owner()->getName() << " connected to port : " << node->getPort() << endl;
-        // if(isRealPort(node->getPort()->owner()->getPort()->owner()->getPort() )){
-        //   cout << "this is real port" << endl;
-        // }
-        // else {
-        //   // cout << "num inst ports for this node "<<node->getInstPorts().size()<< endl;
-        //   // return 1 + getPerviousPort(node->getPort()->owner());
-        // }
+        if (node->getName() == "VSS" || node->getName() == "VDD" || node->getPort() == 0) // if the port is VDD/VSS gives it -1 rank
+        {
+          return -1;
+        }
+        
         return instports.size();
       }
 
   
 }
 
-
+// check if the inst already has rank
 bool hasRank (hcmInstance *inst){
   auto it = rankmap.find(inst);
   return it != rankmap.end();
 
 }
-
+// returns the full name of the inst (not needed for flat topology)
 void getFullName(hcmInstance *inst, string relName){
   if (isPrimitive(inst)){
-    // cout << inst->getName() << "rel is : " << relName << endl; 
     namemap[inst] = relName + inst->getName();
+    
   }
   else{
     string relative = relName + inst->getName() + '/';
@@ -227,19 +199,9 @@ void getFullName(hcmInstance *inst, string relName){
 
   }
 }
-
+// checks if the inst is primitive ( not needed for flat topology)
 bool isPrimitive (hcmInstance *inst){
   int size = inst->masterCell()->getInstances().size() ;
-  // cout <<" size is : " << size << endl;
   return (size == 0);
-
-}
-
-bool isRealPort (hcmPort *port){
-    
-
-   auto it =find(designPortNames.begin(), designPortNames.end(), port->getName());
-
-    return (it != designPortNames.end()) ;
 
 }
