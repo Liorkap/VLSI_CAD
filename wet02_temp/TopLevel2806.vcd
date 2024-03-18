@@ -1,5 +1,5 @@
 $date
-     Thu Jan 27 19:15:54 2022
+     Mon Mar 18 22:05:09 2024
 
 $end
 $version
@@ -17,17 +17,161 @@ $var wire 1 & I[3] $end
 $var wire 1 ' S[0] $end
 $var wire 1 ( S[1] $end
 $var wire 1 ) S[2] $end
-$scope module ff1 $end
+$scope module ff1/FF_and1 $end
 $upscope $end
-$scope module ff2 $end
+$scope module ff1/FF_and2 $end
 $upscope $end
-$scope module ff3 $end
+$scope module ff1/FF_and3 $end
 $upscope $end
-$scope module ff4 $end
+$scope module ff1/FF_and4 $end
 $upscope $end
-$scope module ff5 $end
+$scope module ff1/FF_nor1 $end
 $upscope $end
-$scope module ff6 $end
+$scope module ff1/FF_nor2 $end
+$upscope $end
+$scope module ff1/FF_nor3 $end
+$upscope $end
+$scope module ff1/FF_nor4 $end
+$upscope $end
+$scope module ff1/FF_not1 $end
+$upscope $end
+$scope module ff1/FF_not2 $end
+$upscope $end
+$scope module ff1/FF_not3 $end
+$upscope $end
+$scope module ff1/FF_not4 $end
+$upscope $end
+$scope module ff1/FF_not5 $end
+$upscope $end
+$scope module ff2/FF_and1 $end
+$upscope $end
+$scope module ff2/FF_and2 $end
+$upscope $end
+$scope module ff2/FF_and3 $end
+$upscope $end
+$scope module ff2/FF_and4 $end
+$upscope $end
+$scope module ff2/FF_nor1 $end
+$upscope $end
+$scope module ff2/FF_nor2 $end
+$upscope $end
+$scope module ff2/FF_nor3 $end
+$upscope $end
+$scope module ff2/FF_nor4 $end
+$upscope $end
+$scope module ff2/FF_not1 $end
+$upscope $end
+$scope module ff2/FF_not2 $end
+$upscope $end
+$scope module ff2/FF_not3 $end
+$upscope $end
+$scope module ff2/FF_not4 $end
+$upscope $end
+$scope module ff2/FF_not5 $end
+$upscope $end
+$scope module ff3/FF_and1 $end
+$upscope $end
+$scope module ff3/FF_and2 $end
+$upscope $end
+$scope module ff3/FF_and3 $end
+$upscope $end
+$scope module ff3/FF_and4 $end
+$upscope $end
+$scope module ff3/FF_nor1 $end
+$upscope $end
+$scope module ff3/FF_nor2 $end
+$upscope $end
+$scope module ff3/FF_nor3 $end
+$upscope $end
+$scope module ff3/FF_nor4 $end
+$upscope $end
+$scope module ff3/FF_not1 $end
+$upscope $end
+$scope module ff3/FF_not2 $end
+$upscope $end
+$scope module ff3/FF_not3 $end
+$upscope $end
+$scope module ff3/FF_not4 $end
+$upscope $end
+$scope module ff3/FF_not5 $end
+$upscope $end
+$scope module ff4/FF_and1 $end
+$upscope $end
+$scope module ff4/FF_and2 $end
+$upscope $end
+$scope module ff4/FF_and3 $end
+$upscope $end
+$scope module ff4/FF_and4 $end
+$upscope $end
+$scope module ff4/FF_nor1 $end
+$upscope $end
+$scope module ff4/FF_nor2 $end
+$upscope $end
+$scope module ff4/FF_nor3 $end
+$upscope $end
+$scope module ff4/FF_nor4 $end
+$upscope $end
+$scope module ff4/FF_not1 $end
+$upscope $end
+$scope module ff4/FF_not2 $end
+$upscope $end
+$scope module ff4/FF_not3 $end
+$upscope $end
+$scope module ff4/FF_not4 $end
+$upscope $end
+$scope module ff4/FF_not5 $end
+$upscope $end
+$scope module ff5/FF_and1 $end
+$upscope $end
+$scope module ff5/FF_and2 $end
+$upscope $end
+$scope module ff5/FF_and3 $end
+$upscope $end
+$scope module ff5/FF_and4 $end
+$upscope $end
+$scope module ff5/FF_nor1 $end
+$upscope $end
+$scope module ff5/FF_nor2 $end
+$upscope $end
+$scope module ff5/FF_nor3 $end
+$upscope $end
+$scope module ff5/FF_nor4 $end
+$upscope $end
+$scope module ff5/FF_not1 $end
+$upscope $end
+$scope module ff5/FF_not2 $end
+$upscope $end
+$scope module ff5/FF_not3 $end
+$upscope $end
+$scope module ff5/FF_not4 $end
+$upscope $end
+$scope module ff5/FF_not5 $end
+$upscope $end
+$scope module ff6/FF_and1 $end
+$upscope $end
+$scope module ff6/FF_and2 $end
+$upscope $end
+$scope module ff6/FF_and3 $end
+$upscope $end
+$scope module ff6/FF_and4 $end
+$upscope $end
+$scope module ff6/FF_nor1 $end
+$upscope $end
+$scope module ff6/FF_nor2 $end
+$upscope $end
+$scope module ff6/FF_nor3 $end
+$upscope $end
+$scope module ff6/FF_nor4 $end
+$upscope $end
+$scope module ff6/FF_not1 $end
+$upscope $end
+$scope module ff6/FF_not2 $end
+$upscope $end
+$scope module ff6/FF_not3 $end
+$upscope $end
+$scope module ff6/FF_not4 $end
+$upscope $end
+$scope module ff6/FF_not5 $end
 $upscope $end
 $scope module i1 $end
 $upscope $end
